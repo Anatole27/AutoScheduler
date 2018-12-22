@@ -5,6 +5,7 @@ import java.util.Vector;
 import autoscheduler.checks.exceptions.NoStartDayTaskTipException;
 import autoscheduler.checks.exceptions.TaskDependencyLoopException;
 import autoscheduler.checks.exceptions.UnconnectedTaskException;
+import autoscheduler.types.Project;
 import autoscheduler.types.Task;
 import autoscheduler.types.TaskSequence;
 
@@ -150,6 +151,47 @@ public class TaskWebWalker {
 			}
 		}
 		return deadlineTasks;
+	}
+
+	public static Project[] getProjects(Task[] tasks) {
+		Vector<TaskSequence> taskSeqs = new Vector<>();
+
+		taskSeqs = getTaskSequences(tasks);
+
+		// Fuse groups
+		for (int i = 0; i < taskSeqs.size(); i++) {
+			TaskSequence seq1 = taskSeqs.get(i);
+			for (int j = i + 1; j < taskSeqs.size(); j++) {
+				TaskSequence seq2 = taskSeqs.get(j);
+				for (Task task : seq1.tasks) {
+					if (seq2.tasks.contains(task)) {
+						/*
+						 * Same task has been found in both sequences Transfer all tasks in seq2 to
+						 * seq1, except for those already present in seq 2
+						 */
+						for (Task taskToTransfer : seq2.tasks) {
+							if (!seq1.tasks.contains(taskToTransfer)) {
+								seq1.tasks.add(taskToTransfer);
+							}
+						}
+
+						// Erase seq2
+						taskSeqs.remove(j);
+						j--;
+
+						break;
+					}
+				}
+			}
+		}
+
+		// Extract projects
+		Project[] projects = new Project[taskSeqs.size()];
+		for (int i = 0; i < taskSeqs.size(); i++) {
+			Vector<Task> taskGroup = taskSeqs.get(i).tasks;
+			projects[i] = new Project(taskGroup, taskGroup.get(0).projectName);
+		}
+		return projects;
 	}
 
 	/**

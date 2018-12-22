@@ -1,9 +1,12 @@
 package autoscheduler.schedulers;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Vector;
 
 import autoscheduler.checks.TaskWebWalker;
+import autoscheduler.export.ExportToCsv;
 import autoscheduler.types.Calendar;
 import autoscheduler.types.Day;
 import autoscheduler.types.Task;
@@ -17,18 +20,18 @@ public class ScheduleComputer {
 		/* Tasks */
 		Task[] tasks = new Task[15];
 
-		tasks[0] = new Task("DAMAV: 01-UFS3", 15 * Calendar.HOURS_A_DAY);
-		tasks[1] = new Task("DAMAV: 02-Comm", 5 * Calendar.HOURS_A_DAY);
+		tasks[0] = new Task("01-UFS3", "DAMAV", 15 * Calendar.HOURS_A_DAY);
+		tasks[1] = new Task("02-Comm", "DAMAV", 5 * Calendar.HOURS_A_DAY);
 
 		tasks[0].setStartDay(calendar.days[0]);
 		tasks[1].addDepTask(tasks[0]);
 		tasks[1].setDeadline(calendar.days[92]);
 
-		tasks[2] = new Task("VISIO: 01-UFSTD3", 5 * Calendar.HOURS_A_DAY);
-		tasks[3] = new Task("VISIO: 02-Integration", 10 * Calendar.HOURS_A_DAY);
-		tasks[4] = new Task("VISIO: 03-Rel pos impl", 5 * Calendar.HOURS_A_DAY);
-		tasks[5] = new Task("VISIO: 04-Rel pos anal", 3 * Calendar.HOURS_A_DAY);
-		tasks[6] = new Task("VISIO: 05-Nav sim anal", 1 * Calendar.HOURS_A_DAY);
+		tasks[2] = new Task("01-UFSTD3", "VISIO", 5 * Calendar.HOURS_A_DAY);
+		tasks[3] = new Task("02-Integration", "VISIO", 10 * Calendar.HOURS_A_DAY);
+		tasks[4] = new Task("03-Rel pos impl", "VISIO", 5 * Calendar.HOURS_A_DAY);
+		tasks[5] = new Task("04-Rel pos anal", "VISIO", 3 * Calendar.HOURS_A_DAY);
+		tasks[6] = new Task("05-Nav sim anal", "VISIO", 1 * Calendar.HOURS_A_DAY);
 
 		tasks[2].setStartDay(calendar.days[0]);
 		tasks[3].setStartDay(calendar.days[93]);
@@ -41,14 +44,14 @@ public class ScheduleComputer {
 		tasks[5].setDeadline(calendar.days[153]);
 		tasks[6].setDeadline(calendar.days[153]);
 
-		tasks[7] = new Task("MMACT: Biblio RN", 60); // 70 + 86
-		tasks[8] = new Task("MMACT: Def propu", 40);
-		tasks[9] = new Task("MMACT: WP210", 180); // 180 + 196
-		tasks[10] = new Task("MMACT: WP220", 196);
-		tasks[11] = new Task("MMACT: WP310", 120);
-		tasks[12] = new Task("MMACT: WP320", 90);
-		tasks[13] = new Task("MMACT: WP330", 40);
-		tasks[14] = new Task("MMACT: WP410", 32);
+		tasks[7] = new Task("Biblio RN", "MMACT", 60); // 70 + 86
+		tasks[8] = new Task("Def propu", "MMACT", 40);
+		tasks[9] = new Task("WP210", "MMACT", 180); // 180 + 196
+		tasks[10] = new Task("WP220", "MMACT", 60);
+		tasks[11] = new Task("WP310", "MMACT", 120); // 120, 90, 40, 32
+		tasks[12] = new Task("WP320", "MMACT", 90);
+		tasks[13] = new Task("WP330", "MMACT", 40);
+		tasks[14] = new Task("WP410", "MMACT", 32);
 
 		tasks[7].setStartDay(calendar.days[0]);
 		tasks[8].setStartDay(calendar.days[0]);
@@ -74,6 +77,15 @@ public class ScheduleComputer {
 
 		// Display work
 		System.out.println(calendar.toString());
+
+		// Export
+		try {
+			ExportToCsv.export(calendar, tasks,
+					new File("/home/anatole/Documents/Boulot/Projets/Java/AutoScheduler/out/schedule_data.csv"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
