@@ -27,11 +27,11 @@ public class ScheduleComputer {
 		tasks[1].addDepTask(tasks[0]);
 		tasks[1].setDeadline(calendar.days[92]);
 
-		tasks[2] = new Task("01-UFSTD3", "VISIO", 5 * Calendar.HOURS_A_DAY);
-		tasks[3] = new Task("02-Integration", "VISIO", 10 * Calendar.HOURS_A_DAY);
-		tasks[4] = new Task("03-Rel pos impl", "VISIO", 5 * Calendar.HOURS_A_DAY);
-		tasks[5] = new Task("04-Rel pos anal", "VISIO", 3 * Calendar.HOURS_A_DAY);
-		tasks[6] = new Task("05-Nav sim anal", "VISIO", 1 * Calendar.HOURS_A_DAY);
+		tasks[2] = new Task("01-UFSTD3", "VISIO", 10 * Calendar.HOURS_A_DAY);
+		tasks[3] = new Task("02-Integration", "VISIO", 15 * Calendar.HOURS_A_DAY);
+		tasks[4] = new Task("03-Rel pos impl", "VISIO", 10 * Calendar.HOURS_A_DAY);
+		tasks[5] = new Task("04-Rel pos anal", "VISIO", 5 * Calendar.HOURS_A_DAY);
+		tasks[6] = new Task("05-Nav sim anal", "VISIO", 5 * Calendar.HOURS_A_DAY);
 
 		tasks[2].setStartDay(calendar.days[0]);
 		tasks[3].setStartDay(calendar.days[93]);
@@ -71,12 +71,11 @@ public class ScheduleComputer {
 		try {
 			ScheduleComputer.compute(calendar, tasks);
 		} catch (Exception e) {
-			System.out.println(calendar);
 			throw e;
 		}
 
 		// Display work
-		System.out.println(calendar.toString());
+//		System.out.println(calendar.toString());
 
 		// Export
 		try {

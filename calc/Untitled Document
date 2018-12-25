@@ -1,0 +1,175 @@
+REM  *****  BASIC  *****
+
+Sub Main
+
+End Sub
+
+Sub MacroBjr
+MsgBox "Bjr !"
+End Sub
+
+Sub MakeWorkDayCalendar
+	sheet = ThisComponent.Sheets(1)
+	
+	rem Read input dates and force to begin the first day of a month and end the last day of a month
+	startDate = sheet.getCellByPosition(1,0).value
+	endDate = sheet.getCellByPosition(1,1).value
+	startMonth = Month(startDate)
+	startYear = Year(startDate)
+	endMonth = Month(endDate)
+	endYear = Year(endDate)
+	startDate = DateSerial(startYear, startMonth, 1)
+	If endMonth + 1 >= 13 Then
+		endMonth = 1
+		endYear = endYear + 1
+	Else
+		endMonth = endMonth + 1
+	End If
+	endDate = DateSerial(endYear, endMonth, 1) - 1
+	
+	rem Verify if start date is before end date
+	If startDate > endDate Then
+		print "Start date must be before end date"
+		Exit Sub
+	End If
+	
+	rem Read previous data
+	Dim dates(10000) As Date
+	Dim states(10000) As Integer
+	readCalendar(sheet, dates, states)
+	
+	rem Clear all
+	For i=3 To 40
+		For j=0 To 100
+			sheet.getCellByPosition(j,i).string = ""
+		Next
+	Next
+	
+	rem Write new data
+	writeCalendar(sheet, startDate, endDate, dates, states)
+End Sub
+
+Function readCalendar(sheet, dates, states)
+	rem 
+	cell = sheet.getCellByPosition(0,3)
+	dateString = Split(cell.string)
+	If UBound(dateString) = -1 Then
+		ReDim dates(0)
+		ReDim states(0)
+	Else
+		
+		rem Read dates and months
+		curDate = DateSerial(dateString(1), GetMonthNumber(dateString(0)), 1)
+		i = 4
+		j = 0
+		idx = 0
+		prevMonth = Month(curDate)
+		while sheet.getCellByPosition(j,i).string <> ""
+			dates(idx) = curDate
+			states(idx) = sheet.getCellByPosition(j,i).value
+			idx = idx + 1
+			i = i+1
+			curDate = curDate + 1
+			if prevMonth <> Month(curDate) then
+				j = j+1
+				i = 4
+				prevMonth = Month(curDate)
+			end if
+		wend
+	
+	End If
+	
+End Function
+
+Function writeCalendar(sheet, startDate, endDate, dates, states)
+	curDate = startDate
+	prevMonth = 0
+	m0 = Month(curDate)
+	While curDate <= endDate
+		
+		rem Write month title
+		curMonth = Month(curDate)
+		If curMonth <> prevMonth Then
+			d0 = Day(curDate)
+			prevMonth = Month(curDate)
+		    sheet.getCellByPosition(curMonth - m0,3).string = GetMonthName(curMonth) + " " + Year(curDate)
+		End If
+				
+		rem Write 0 or 1 (weekends)
+		d = Day(curDate)
+		If WeekDay(curDate) = 6 Or WeekDay(curDate) = 7 Then
+		    sheet.getCellByPosition(curMonth - m0,d-d0 + 4).value = 1
+		Else
+		    sheet.getCellByPosition(curMonth - m0,d-d0 + 4).value = 0
+	    End If
+	    
+	    rem Write previously saved dates
+	    For dateIdx=LBound(dates) To UBound(dates)
+	    	If dates(dateIdx) = curDate Then
+	    		sheet.getCellByPosition(curMonth - m0,d-d0 + 4).value = states(dateIdx)
+	    	End If
+	    Next
+
+		curDate = curDate + 1
+	Wend
+End Function
+
+Function GetMonthName(MonthNb As Integer) As String
+
+    Select Case MonthNb
+      case 1
+        GetMonthName = "JAN"
+      case 2
+        GetMonthName = "FEB"
+      case 3
+        GetMonthName = "MAR"
+      case 4
+        GetMonthName = "APR"
+      case 5
+        GetMonthName = "MAY"
+      case 6
+        GetMonthName = "JUN"
+      case 7
+        GetMonthName = "JUL"
+      case 8
+        GetMonthName = "AUG"
+      case 9
+        GetMonthName = "SEP"
+      case 10
+        GetMonthName = "OCT"
+      case 11
+        GetMonthName = "NOV"
+      case 12
+        GetMonthName = "DEC"
+    End Select
+End Function
+
+Function GetMonthNumber(MonthName As String) As Integer
+
+    Select Case MonthName
+      case "JAN"
+      	GetMonthNumber = 1
+      case "FEB"
+      	GetMonthNumber = 2
+      case "MAR"
+      	GetMonthNumber = 3
+      case "APR"
+      	GetMonthNumber = 4
+      case "MAY"
+      	GetMonthNumber = 5
+      case "JUN"
+      	GetMonthNumber = 6
+      case "JUL"
+      	GetMonthNumber = 7
+      case "AUG"
+      	GetMonthNumber = 8
+      case "SEP"
+      	GetMonthNumber = 9
+      case "OCT"
+      	GetMonthNumber = 10
+      case "NOV"
+      	GetMonthNumber = 11
+      case "DEC"
+      	GetMonthNumber = 12
+    End Select
+End Function

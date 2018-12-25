@@ -55,7 +55,8 @@ public class TaskSequence {
 	 * Returns true if:
 	 * 
 	 * <ul>
-	 * <li>The start date has passed</li>
+	 * <li>Sequence start date has passed</li>
+	 * <li>Current task start date has passed</li>
 	 * <li>The remaining hours > 0</li>
 	 * </ul>
 	 * 
@@ -63,7 +64,10 @@ public class TaskSequence {
 	 * @return
 	 */
 	public boolean isRunning(Day today) {
-		return getStartDay().getDayNumber() <= today.getDayNumber() && getRemainingHours() > 0;
+		System.out.println(this);
+		Task task = getCurrentTask();
+		return (getStartDay().getDayNumber() <= today.getDayNumber()
+				&& task.getStartDay().getDayNumber() <= today.getDayNumber() && getRemainingHours() > 0);
 	}
 
 	private int getRemainingHours() {
