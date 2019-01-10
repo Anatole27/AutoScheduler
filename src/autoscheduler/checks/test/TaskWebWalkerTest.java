@@ -2,36 +2,38 @@ package autoscheduler.checks.test;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.text.ParseException;
+
 import org.junit.jupiter.api.Test;
 
 import autoscheduler.checks.TaskWebWalker;
 import autoscheduler.checks.exceptions.NoStartDayTaskTipException;
 import autoscheduler.checks.exceptions.TaskDependencyLoopException;
 import autoscheduler.checks.exceptions.UnconnectedTaskException;
-import autoscheduler.types.Calendar;
 import autoscheduler.types.Project;
 import autoscheduler.types.Task;
+import autoscheduler.types.WorkCalendar;
 
 class TaskWebWalkerTest {
 
 	@Test
-	void testAllGood() {
-		Calendar calendar = new Calendar(300);
+	void testAllGood() throws ParseException {
+		WorkCalendar calendar = new WorkCalendar("01/01/2019", 300);
 
 		Task[] tasks = new Task[15];
 
-		tasks[0] = new Task("01-UFS3", "DAMAV", 15 * Calendar.HOURS_A_DAY);
-		tasks[1] = new Task("02-Comm", "DAMAV", 5 * Calendar.HOURS_A_DAY);
+		tasks[0] = new Task("01-UFS3", "DAMAV", 15 * WorkCalendar.HOURS_A_DAY);
+		tasks[1] = new Task("02-Comm", "DAMAV", 5 * WorkCalendar.HOURS_A_DAY);
 
 		tasks[0].setStartDay(calendar.days[0]);
 		tasks[1].addDepTask(tasks[0]);
 		tasks[1].setDeadline(calendar.days[92]);
 
-		tasks[2] = new Task("01-UFSTD3", "VISIO", 5 * Calendar.HOURS_A_DAY);
-		tasks[3] = new Task("02-Integration", "VISIO", 10 * Calendar.HOURS_A_DAY);
-		tasks[4] = new Task("03-Rel pos impl", "VISIO", 5 * Calendar.HOURS_A_DAY);
-		tasks[5] = new Task("04-Rel pos anal", "VISIO", 3 * Calendar.HOURS_A_DAY);
-		tasks[6] = new Task("05-Nav sim anal", "VISIO", 1 * Calendar.HOURS_A_DAY);
+		tasks[2] = new Task("01-UFSTD3", "VISIO", 5 * WorkCalendar.HOURS_A_DAY);
+		tasks[3] = new Task("02-Integration", "VISIO", 10 * WorkCalendar.HOURS_A_DAY);
+		tasks[4] = new Task("03-Rel pos impl", "VISIO", 5 * WorkCalendar.HOURS_A_DAY);
+		tasks[5] = new Task("04-Rel pos anal", "VISIO", 3 * WorkCalendar.HOURS_A_DAY);
+		tasks[6] = new Task("05-Nav sim anal", "VISIO", 1 * WorkCalendar.HOURS_A_DAY);
 
 		tasks[2].setStartDay(calendar.days[0]);
 		tasks[3].setStartDay(calendar.days[93]);
@@ -76,23 +78,23 @@ class TaskWebWalkerTest {
 	}
 
 	@Test
-	void testLoop() {
-		Calendar calendar = new Calendar(300);
+	void testLoop() throws ParseException {
+		WorkCalendar calendar = new WorkCalendar("01/01/2019", 300);
 
 		Task[] tasks = new Task[15];
 
-		tasks[0] = new Task("01-UFS3", "DAMAV", 15 * Calendar.HOURS_A_DAY);
-		tasks[1] = new Task("02-Comm", "DAMAV", 5 * Calendar.HOURS_A_DAY);
+		tasks[0] = new Task("01-UFS3", "DAMAV", 15 * WorkCalendar.HOURS_A_DAY);
+		tasks[1] = new Task("02-Comm", "DAMAV", 5 * WorkCalendar.HOURS_A_DAY);
 
 		tasks[0].setStartDay(calendar.days[0]);
 		tasks[1].addDepTask(tasks[0]);
 		tasks[1].setDeadline(calendar.days[92]);
 
-		tasks[2] = new Task("01-UFSTD3", "VISIO", 5 * Calendar.HOURS_A_DAY);
-		tasks[3] = new Task("02-Integration", "VISIO", 10 * Calendar.HOURS_A_DAY);
-		tasks[4] = new Task("03-Rel pos impl", "VISIO", 5 * Calendar.HOURS_A_DAY);
-		tasks[5] = new Task("04-Rel pos anal", "VISIO", 3 * Calendar.HOURS_A_DAY);
-		tasks[6] = new Task("05-Nav sim anal", "VISIO", 1 * Calendar.HOURS_A_DAY);
+		tasks[2] = new Task("01-UFSTD3", "VISIO", 5 * WorkCalendar.HOURS_A_DAY);
+		tasks[3] = new Task("02-Integration", "VISIO", 10 * WorkCalendar.HOURS_A_DAY);
+		tasks[4] = new Task("03-Rel pos impl", "VISIO", 5 * WorkCalendar.HOURS_A_DAY);
+		tasks[5] = new Task("04-Rel pos anal", "VISIO", 3 * WorkCalendar.HOURS_A_DAY);
+		tasks[6] = new Task("05-Nav sim anal", "VISIO", 1 * WorkCalendar.HOURS_A_DAY);
 
 		tasks[2].setStartDay(calendar.days[0]);
 		tasks[3].setStartDay(calendar.days[93]);
@@ -141,23 +143,23 @@ class TaskWebWalkerTest {
 	}
 
 	@Test
-	void testNoStartTip() {
-		Calendar calendar = new Calendar(300);
+	void testNoStartTip() throws ParseException {
+		WorkCalendar calendar = new WorkCalendar("01/01/2019", 300);
 
 		Task[] tasks = new Task[15];
 
-		tasks[0] = new Task("01-UFS3", "DAMAV", 15 * Calendar.HOURS_A_DAY);
-		tasks[1] = new Task("02-Comm", "DAMAV", 5 * Calendar.HOURS_A_DAY);
+		tasks[0] = new Task("01-UFS3", "DAMAV", 15 * WorkCalendar.HOURS_A_DAY);
+		tasks[1] = new Task("02-Comm", "DAMAV", 5 * WorkCalendar.HOURS_A_DAY);
 
 		tasks[0].setStartDay(calendar.days[0]);
 		tasks[1].addDepTask(tasks[0]);
 		tasks[1].setDeadline(calendar.days[92]);
 
-		tasks[2] = new Task("01-UFSTD3", "VISIO", 5 * Calendar.HOURS_A_DAY);
-		tasks[3] = new Task("02-Integration", "VISIO", 10 * Calendar.HOURS_A_DAY);
-		tasks[4] = new Task("03-Rel pos impl", "VISIO", 5 * Calendar.HOURS_A_DAY);
-		tasks[5] = new Task("04-Rel pos anal", "VISIO", 3 * Calendar.HOURS_A_DAY);
-		tasks[6] = new Task("05-Nav sim anal", "VISIO", 1 * Calendar.HOURS_A_DAY);
+		tasks[2] = new Task("01-UFSTD3", "VISIO", 5 * WorkCalendar.HOURS_A_DAY);
+		tasks[3] = new Task("02-Integration", "VISIO", 10 * WorkCalendar.HOURS_A_DAY);
+		tasks[4] = new Task("03-Rel pos impl", "VISIO", 5 * WorkCalendar.HOURS_A_DAY);
+		tasks[5] = new Task("04-Rel pos anal", "VISIO", 3 * WorkCalendar.HOURS_A_DAY);
+		tasks[6] = new Task("05-Nav sim anal", "VISIO", 1 * WorkCalendar.HOURS_A_DAY);
 
 		tasks[2].setStartDay(calendar.days[0]);
 		tasks[3].setStartDay(calendar.days[93]);
@@ -204,22 +206,22 @@ class TaskWebWalkerTest {
 	}
 
 	@Test
-	void testUnconnectedTask() {
-		Calendar calendar = new Calendar(300);
+	void testUnconnectedTask() throws ParseException {
+		WorkCalendar calendar = new WorkCalendar("01/01/2019", 300);
 
 		Task[] tasks = new Task[15];
 
-		tasks[0] = new Task("01-UFS3", "DAMAV", 15 * Calendar.HOURS_A_DAY);
-		tasks[1] = new Task("02-Comm", "DAMAV", 5 * Calendar.HOURS_A_DAY);
+		tasks[0] = new Task("01-UFS3", "DAMAV", 15 * WorkCalendar.HOURS_A_DAY);
+		tasks[1] = new Task("02-Comm", "DAMAV", 5 * WorkCalendar.HOURS_A_DAY);
 
 		tasks[0].setStartDay(calendar.days[0]);
 		tasks[1].addDepTask(tasks[0]);
 
-		tasks[2] = new Task("01-UFSTD3", "VISIO", 5 * Calendar.HOURS_A_DAY);
-		tasks[3] = new Task("02-Integration", "VISIO", 10 * Calendar.HOURS_A_DAY);
-		tasks[4] = new Task("03-Rel pos impl", "VISIO", 5 * Calendar.HOURS_A_DAY);
-		tasks[5] = new Task("04-Rel pos anal", "VISIO", 3 * Calendar.HOURS_A_DAY);
-		tasks[6] = new Task("05-Nav sim anal", "VISIO", 1 * Calendar.HOURS_A_DAY);
+		tasks[2] = new Task("01-UFSTD3", "VISIO", 5 * WorkCalendar.HOURS_A_DAY);
+		tasks[3] = new Task("02-Integration", "VISIO", 10 * WorkCalendar.HOURS_A_DAY);
+		tasks[4] = new Task("03-Rel pos impl", "VISIO", 5 * WorkCalendar.HOURS_A_DAY);
+		tasks[5] = new Task("04-Rel pos anal", "VISIO", 3 * WorkCalendar.HOURS_A_DAY);
+		tasks[6] = new Task("05-Nav sim anal", "VISIO", 1 * WorkCalendar.HOURS_A_DAY);
 
 		tasks[2].setStartDay(calendar.days[0]);
 		tasks[3].setStartDay(calendar.days[93]);
@@ -267,24 +269,24 @@ class TaskWebWalkerTest {
 	}
 
 	@Test
-	void testExtractProjects() {
+	void testExtractProjects() throws ParseException {
 
-		Calendar calendar = new Calendar(300);
+		WorkCalendar calendar = new WorkCalendar("01/01/2019", 300);
 
 		Task[] tasks = new Task[15];
 
-		tasks[0] = new Task("01-UFS3", "DAMAV", 15 * Calendar.HOURS_A_DAY);
-		tasks[1] = new Task("02-Comm", "DAMAV", 5 * Calendar.HOURS_A_DAY);
+		tasks[0] = new Task("01-UFS3", "DAMAV", 15 * WorkCalendar.HOURS_A_DAY);
+		tasks[1] = new Task("02-Comm", "DAMAV", 5 * WorkCalendar.HOURS_A_DAY);
 
 		tasks[0].setStartDay(calendar.days[0]);
 		tasks[1].addDepTask(tasks[0]);
 		tasks[1].setDeadline(calendar.days[92]);
 
-		tasks[2] = new Task("01-UFSTD3", "VISIO", 5 * Calendar.HOURS_A_DAY);
-		tasks[3] = new Task("02-Integration", "VISIO", 10 * Calendar.HOURS_A_DAY);
-		tasks[4] = new Task("03-Rel pos impl", "VISIO", 5 * Calendar.HOURS_A_DAY);
-		tasks[5] = new Task("04-Rel pos anal", "VISIO", 3 * Calendar.HOURS_A_DAY);
-		tasks[6] = new Task("05-Nav sim anal", "VISIO", 1 * Calendar.HOURS_A_DAY);
+		tasks[2] = new Task("01-UFSTD3", "VISIO", 5 * WorkCalendar.HOURS_A_DAY);
+		tasks[3] = new Task("02-Integration", "VISIO", 10 * WorkCalendar.HOURS_A_DAY);
+		tasks[4] = new Task("03-Rel pos impl", "VISIO", 5 * WorkCalendar.HOURS_A_DAY);
+		tasks[5] = new Task("04-Rel pos anal", "VISIO", 3 * WorkCalendar.HOURS_A_DAY);
+		tasks[6] = new Task("05-Nav sim anal", "VISIO", 1 * WorkCalendar.HOURS_A_DAY);
 
 		tasks[2].setStartDay(calendar.days[0]);
 		tasks[3].setStartDay(calendar.days[93]);

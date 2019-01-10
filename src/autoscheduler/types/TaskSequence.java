@@ -66,8 +66,19 @@ public class TaskSequence {
 	public boolean isRunning(Day today) {
 		System.out.println(this);
 		Task task = getCurrentTask();
-		return (getStartDay().getDayNumber() <= today.getDayNumber()
-				&& task.getStartDay().getDayNumber() <= today.getDayNumber() && getRemainingHours() > 0);
+		if (task == null) {
+			return false;
+		} else {
+			if (getStartDay().getDayNumber() <= today.getDayNumber() && getRemainingHours() > 0) {
+				if (task.isStartTask()) {
+					return task.getStartDay().getDayNumber() <= today.getDayNumber();
+				} else {
+					return true;
+				}
+			}
+		}
+		return false;
+
 	}
 
 	private int getRemainingHours() {
@@ -93,17 +104,18 @@ public class TaskSequence {
 	 * </ul>
 	 * 
 	 * @param today
+	 * @param calendar
 	 * @return
 	 */
-	public double getPriority(Day today) {
+	public double getPriority(Day today, WorkCalendar calendar) {
 		int remainingHours = getRemainingHours();
 		int leftDuration = getDeadline().getDayNumber() - today.getDayNumber() + 1;
 		double priority;
 		if (leftDuration > 0)
-			priority = (double) remainingHours / (double) Calendar.HOURS_A_DAY / (double) leftDuration;
+			priority = (double) remainingHours / (double) WorkCalendar.HOURS_A_DAY / (double) leftDuration;
 		else {
 			int totalDuration = getDeadline().getDayNumber() - getStartDay().getDayNumber();
-			priority = 1 + remainingHours / (double) Calendar.HOURS_A_DAY / totalDuration;
+			priority = 1 + remainingHours / (double) WorkCalendar.HOURS_A_DAY / totalDuration;
 		}
 
 		return priority;
@@ -128,6 +140,9 @@ public class TaskSequence {
 		task = next();
 		while (task.remHours <= 0) {
 			task = next();
+			if (task == null) {
+				return null;
+			}
 		}
 		return task;
 	}

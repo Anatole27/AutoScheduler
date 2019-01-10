@@ -4,13 +4,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import autoscheduler.types.Calendar;
+import autoscheduler.types.WorkCalendar;
 import autoscheduler.types.Day;
 import autoscheduler.types.Task;
 
 public class ExportToCsv {
 
-	public static void export(Calendar calendar, Task[] tasks, File file) throws IOException {
+	public static void export(WorkCalendar calendar, Task[] tasks, File file) throws IOException {
 		FileWriter fileWriter = new FileWriter(file);
 		StringBuffer data = new StringBuffer();
 		String del = ",";
@@ -26,7 +26,7 @@ public class ExportToCsv {
 		fileWriter.close();
 	}
 
-	private static void writeDayWork(Calendar calendar, Task[] tasks, StringBuffer data, String del)
+	private static void writeDayWork(WorkCalendar calendar, Task[] tasks, StringBuffer data, String del)
 			throws IOException {
 
 		// Write title
@@ -45,7 +45,7 @@ public class ExportToCsv {
 			String line = task.toString().replaceAll(del, "");
 			for (Day day : calendar.days) {
 				if (day.workTask == task) {
-					line += del + Calendar.HOURS_A_DAY;
+					line += del + WorkCalendar.HOURS_A_DAY;
 				} else {
 					line += del;
 				}
@@ -55,7 +55,7 @@ public class ExportToCsv {
 		}
 	}
 
-	private static void writeCumulatedWork(Calendar calendar, Task[] tasks, StringBuffer data, String del)
+	private static void writeCumulatedWork(WorkCalendar calendar, Task[] tasks, StringBuffer data, String del)
 			throws IOException {
 
 		// Write title
@@ -75,7 +75,7 @@ public class ExportToCsv {
 			int cumWork = 0;
 			for (Day day : calendar.days) {
 				if (day.workTask == task) {
-					cumWork += Calendar.HOURS_A_DAY;
+					cumWork += WorkCalendar.HOURS_A_DAY;
 					line += del + cumWork;
 				} else {
 					line += del;
@@ -86,7 +86,7 @@ public class ExportToCsv {
 		}
 	}
 
-	private static void writeGantt(Calendar calendar, Task[] tasks, StringBuffer data, String del) throws IOException {
+	private static void writeGantt(WorkCalendar calendar, Task[] tasks, StringBuffer data, String del) throws IOException {
 
 		// Write title
 		data.append("Cumulated work\n");
