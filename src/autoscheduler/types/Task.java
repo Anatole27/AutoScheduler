@@ -13,7 +13,6 @@ public class Task {
 	private boolean isDeadline;
 	private Day start = null;
 	private Day deadline = null;
-	public Vector<TaskSequence> taskSequence = new Vector<>();;
 
 	public Task(String name, String projectName, int initHours) {
 		this.name = name;
@@ -50,10 +49,6 @@ public class Task {
 
 	public boolean isDeadline() {
 		return isDeadline;
-	}
-
-	public void addPriorities(Vector<TaskSequence> priorities) {
-		this.taskSequence.addAll(priorities);
 	}
 
 	@Override

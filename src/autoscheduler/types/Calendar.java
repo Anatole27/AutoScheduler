@@ -10,12 +10,6 @@ public class Calendar {
 		for (int i = 0; i < nDays; i++) {
 			days[i] = new Day(i);
 		}
-		for (int i = 1; i < nDays; i++) {
-			days[i].yesterday = days[i - 1];
-		}
-		for (int i = 0; i < nDays - 1; i++) {
-			days[i].tomorrow = days[i + 1];
-		}
 	}
 
 	@Override
