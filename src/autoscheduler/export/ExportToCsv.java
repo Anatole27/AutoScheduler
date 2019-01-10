@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import autoscheduler.types.WorkCalendar;
 import autoscheduler.types.Day;
 import autoscheduler.types.Task;
+import autoscheduler.types.WorkCalendar;
 
 public class ExportToCsv {
 
@@ -47,7 +47,11 @@ public class ExportToCsv {
 				if (day.workTask == task) {
 					line += del + WorkCalendar.HOURS_A_DAY;
 				} else {
-					line += del;
+					if (day.isHolidays()) {
+						line += del + "h";
+					} else {
+						line += del;
+					}
 				}
 			}
 			line += "\n";
@@ -86,7 +90,8 @@ public class ExportToCsv {
 		}
 	}
 
-	private static void writeGantt(WorkCalendar calendar, Task[] tasks, StringBuffer data, String del) throws IOException {
+	private static void writeGantt(WorkCalendar calendar, Task[] tasks, StringBuffer data, String del)
+			throws IOException {
 
 		// Write title
 		data.append("Cumulated work\n");

@@ -21,18 +21,18 @@ public class ScheduleComputer {
 		/* Tasks */
 		Task[] tasks = new Task[15];
 
-		tasks[0] = new Task("01-UFS3", "DAMAV", 15 * WorkCalendar.HOURS_A_DAY);
-		tasks[1] = new Task("02-Comm", "DAMAV", 5 * WorkCalendar.HOURS_A_DAY);
+		tasks[0] = new Task("01-UFS3", "DAMAV", 5 * WorkCalendar.HOURS_A_DAY);
+		tasks[1] = new Task("02-Comm", "DAMAV", 3 * WorkCalendar.HOURS_A_DAY);
 
 		tasks[0].setStartDay(calendar.getDay("01/01/2019"));
 		tasks[1].addDepTask(tasks[0]);
 		tasks[1].setDeadline(calendar.getDay("31/03/2019"));
 
-		tasks[2] = new Task("01-UFSTD3", "VISIO", 10 * WorkCalendar.HOURS_A_DAY);
-		tasks[3] = new Task("02-Integration", "VISIO", 15 * WorkCalendar.HOURS_A_DAY);
-		tasks[4] = new Task("03-Rel pos impl", "VISIO", 10 * WorkCalendar.HOURS_A_DAY);
-		tasks[5] = new Task("04-Rel pos anal", "VISIO", 5 * WorkCalendar.HOURS_A_DAY);
-		tasks[6] = new Task("05-Nav sim anal", "VISIO", 5 * WorkCalendar.HOURS_A_DAY);
+		tasks[2] = new Task("01-UFSTD3", "VISIO", 5 * WorkCalendar.HOURS_A_DAY);
+		tasks[3] = new Task("02-Integration", "VISIO", 5 * WorkCalendar.HOURS_A_DAY);
+		tasks[4] = new Task("03-Rel pos impl", "VISIO", 5 * WorkCalendar.HOURS_A_DAY);
+		tasks[5] = new Task("04-Rel pos anal", "VISIO", 2 * WorkCalendar.HOURS_A_DAY);
+		tasks[6] = new Task("05-Nav sim anal", "VISIO", 2 * WorkCalendar.HOURS_A_DAY);
 
 		tasks[2].setStartDay(calendar.days[0]);
 		tasks[3].setStartDay(calendar.getDay("01/04/2019"));
@@ -45,10 +45,10 @@ public class ScheduleComputer {
 		tasks[5].setDeadline(calendar.getDay("31/05/2019"));
 		tasks[6].setDeadline(calendar.getDay("31/05/2019"));
 
-		tasks[7] = new Task("Biblio RN", "MMACT", 60); // 70 + 86
-		tasks[8] = new Task("Def propu", "MMACT", 40);
-		tasks[9] = new Task("WP210", "MMACT", 180); // 180 + 196
-		tasks[10] = new Task("WP220", "MMACT", 60);
+		tasks[7] = new Task("Biblio", "MMACT", 60); // 70 + 86
+		tasks[8] = new Task("Def propu", "MMACT", 0);
+		tasks[9] = new Task("WP210", "MMACT", 120); // 180 + 196
+		tasks[10] = new Task("WP220", "MMACT", 40);
 		tasks[11] = new Task("WP310", "MMACT", 120); // 120, 90, 40, 32
 		tasks[12] = new Task("WP320", "MMACT", 90);
 		tasks[13] = new Task("WP330", "MMACT", 40);
@@ -73,8 +73,6 @@ public class ScheduleComputer {
 		calendar.setHolidays("21/01/2019", "25/01/2019");
 
 		// Frequent holidays
-		calendar.setHolidays("21/02/2019", "27/02/2019");
-		calendar.setHolidays("21/03/2019", "27/03/2019");
 		calendar.setHolidays("21/04/2019", "27/04/2019");
 		calendar.setHolidays("21/05/2019", "27/05/2019");
 		calendar.setHolidays("21/06/2019", "27/06/2019");

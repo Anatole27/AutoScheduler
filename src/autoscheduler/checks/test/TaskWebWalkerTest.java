@@ -49,7 +49,7 @@ class TaskWebWalkerTest {
 		tasks[7] = new Task("Biblio RN", "MMACT", 60); // 70 + 86
 		tasks[8] = new Task("Def propu", "MMACT", 40);
 		tasks[9] = new Task("WP210", "MMACT", 180); // 180 + 196
-		tasks[10] = new Task("WP220", "MMACT", 196);
+		tasks[10] = new Task("WP220", "MMACT", 40);
 		tasks[11] = new Task("WP310", "MMACT", 120);
 		tasks[12] = new Task("WP320", "MMACT", 90);
 		tasks[13] = new Task("WP330", "MMACT", 40);
