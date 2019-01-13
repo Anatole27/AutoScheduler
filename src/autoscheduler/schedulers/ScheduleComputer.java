@@ -16,7 +16,9 @@ public class ScheduleComputer {
 
 	public static void main(String[] args) throws Exception {
 		WorkCalendar calendar;
-		calendar = new WorkCalendar("01/01/2019", 300);
+		calendar = new WorkCalendar("01/01/2019", 365);
+
+		Day today = calendar.getDay("13/01/2019");
 
 		/* Tasks */
 		Task[] tasks = new Task[15];
@@ -45,10 +47,10 @@ public class ScheduleComputer {
 		tasks[5].setDeadline(calendar.getDay("31/05/2019"));
 		tasks[6].setDeadline(calendar.getDay("31/05/2019"));
 
-		tasks[7] = new Task("Biblio", "MMACT", 60); // 70 + 86
+		tasks[7] = new Task("Biblio", "MMACT", 24); // 70 + 86
 		tasks[8] = new Task("Def propu", "MMACT", 0);
-		tasks[9] = new Task("WP210", "MMACT", 120); // 180 + 196
-		tasks[10] = new Task("WP220", "MMACT", 40);
+		tasks[9] = new Task("WP210", "MMACT", 100); // 180 + 196
+		tasks[10] = new Task("WP220", "MMACT", 20);
 		tasks[11] = new Task("WP310", "MMACT", 120); // 120, 90, 40, 32
 		tasks[12] = new Task("WP320", "MMACT", 90);
 		tasks[13] = new Task("WP330", "MMACT", 40);
@@ -79,9 +81,22 @@ public class ScheduleComputer {
 		calendar.setHolidays("21/07/2019", "27/07/2019");
 		calendar.setHolidays("21/08/2019", "27/08/2019");
 
+		// Jours feries
+		calendar.setHolidays("01/01/2019");
+		calendar.setHolidays("02/04/2019");
+		calendar.setHolidays("01/05/2019");
+		calendar.setHolidays("08/05/2019");
+		calendar.setHolidays("10/05/2019");
+		calendar.setHolidays("21/05/2019");
+		calendar.setHolidays("14/07/2019");
+		calendar.setHolidays("15/08/2019");
+		calendar.setHolidays("01/11/2019");
+		calendar.setHolidays("11/11/2019");
+		calendar.setHolidays("25/12/2019");
+
 		// Computer
 		try {
-			ScheduleComputer.compute(calendar, tasks);
+			ScheduleComputer.compute(calendar, tasks, today);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -100,11 +115,15 @@ public class ScheduleComputer {
 
 	}
 
-	public static void compute(WorkCalendar calendar, Task[] tasks) {
+	public static void compute(WorkCalendar calendar, Task[] tasks, Day today) {
 
 		Vector<TaskSequence> allTaskSequences = TaskWebWalker.getTaskSequences(tasks);
 
 		for (Day day : calendar.days) {
+
+			if (day.getDayNumber() < today.getDayNumber()) {
+				continue;
+			}
 
 			if (!day.isHolidays()) {
 

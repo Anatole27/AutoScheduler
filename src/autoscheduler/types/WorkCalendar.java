@@ -25,21 +25,21 @@ public class WorkCalendar {
 		for (Day day : days) {
 			Date date = getDate(day);
 			calendar.setTime(date);
-			if (calendar.get(Calendar.DAY_OF_WEEK) >= 6) {
+			if (calendar.get(Calendar.DAY_OF_WEEK) == 7 || calendar.get(Calendar.DAY_OF_WEEK) == 1) {
 				day.setIsHolidays(true);
 			}
 		}
 	}
 
 	public Date getDate(Day day) {
-		Date date = new Date(startDate.getTime() + day.getDayNumber() * (1000 * 60 * 60 * 24));
+		Date date = new Date(startDate.getTime() + (long) day.getDayNumber() * (1000 * 60 * 60 * 24));
 		return date;
 	}
 
 	public Day getDay(String dateFormat) throws Exception {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Date dayDate = sdf.parse(dateFormat);
-		int iDay = Math.round((dayDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+		int iDay = Math.round((float) (dayDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
 		if (iDay < 0) {
 			throw new Exception("Date provided is before calendar start date");
 		}
@@ -47,6 +47,10 @@ public class WorkCalendar {
 			throw new Exception("Calendar length does not cover provided date");
 		}
 		return days[iDay];
+	}
+
+	public void setHolidays(String oneDayDate) throws Exception {
+		setHolidays(oneDayDate, oneDayDate);
 	}
 
 	public void setHolidays(String startDate, String endDate) throws Exception {

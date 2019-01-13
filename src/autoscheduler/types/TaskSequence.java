@@ -64,7 +64,6 @@ public class TaskSequence {
 	 * @return
 	 */
 	public boolean isRunning(Day today) {
-		System.out.println(this);
 		Task task = getCurrentTask();
 		if (task == null) {
 			return false;

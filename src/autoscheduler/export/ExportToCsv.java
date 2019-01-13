@@ -3,6 +3,7 @@ package autoscheduler.export;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 import autoscheduler.types.Day;
 import autoscheduler.types.Task;
@@ -29,8 +30,14 @@ public class ExportToCsv {
 	private static void writeDayWork(WorkCalendar calendar, Task[] tasks, StringBuffer data, String del)
 			throws IOException {
 
-		// Write title
-		data.append("Day work\n");
+		// Write first line (dates)
+		String firstLine = "Day work";
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		for (Day day : calendar.days) {
+			firstLine += del + sdf.format(calendar.getDate(day));
+		}
+		firstLine += "\n";
+		data.append(firstLine);
 
 		// Write header
 		String header = "Tasks";
